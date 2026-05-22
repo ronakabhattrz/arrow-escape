@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Native — Capacitor auto-generates these from npm packages
+ios/App/Pods/
+ios/App/.build/
+ios/App/App/public/
+android/.gradle/
+android/app/build/
+android/build/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# IDE
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Cache
+.eslintcache
+.vite/

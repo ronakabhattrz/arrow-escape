@@ -7,7 +7,7 @@
 //
 // Also update Info.plist GADApplicationIdentifier with your real App ID.
 
-const ADS_ENABLED = false; // flip to true when Ad Unit IDs are ready
+const ADS_ENABLED = true; // flip to true when Ad Unit IDs are ready
 
 export async function initAdMob(): Promise<void> {
   if (!ADS_ENABLED) return;

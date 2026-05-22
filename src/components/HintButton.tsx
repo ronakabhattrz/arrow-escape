@@ -6,11 +6,14 @@ export function HintButton({ count, onUse, disabled }: Props) {
   const inactive = disabled || count <= 0;
   return (
     <button
-      className={`hint-btn${inactive ? ' disabled' : ''}`}
+      className={`hint-btn${inactive ? ' inactive' : ''}`}
       onClick={inactive ? undefined : onUse}
     >
-      <IconHint size={22} style={{ color: inactive ? 'var(--text3)' : 'var(--hint)' }} />
-      <span className="hint-count">{disabled ? 'OFF' : count}</span>
+      <div className="hint-btn-row">
+        <IconHint size={16} />
+        <span className="hint-count">{disabled ? '—' : count}</span>
+      </div>
+      <span className="hint-label">HINTS</span>
     </button>
   );
 }

@@ -322,10 +322,10 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; }
 
 .hud {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  padding: 0 16px;
-  height: 56px;
+  padding: env(safe-area-inset-top, 0px) 16px 10px;
+  min-height: calc(56px + env(safe-area-inset-top, 0px));
   background: rgba(4,7,15,0.88);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
@@ -367,10 +367,10 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; }
 
 .game-hud {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  padding: 0 16px;
-  height: 60px;
+  padding: env(safe-area-inset-top, 0px) 16px 10px;
+  min-height: calc(60px + env(safe-area-inset-top, 0px));
   flex-shrink: 0;
   background: rgba(4,7,15,0.88);
   backdrop-filter: blur(24px) saturate(180%);
@@ -642,20 +642,19 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; }
 
 .heart-bar {
   display: flex;
-  gap: 5px;
+  gap: 3px;
   align-items: center;
-  min-width: 60px;
+  min-width: 84px;
 }
 
-.heart-icon {
-  font-size: 20px;
-  filter: drop-shadow(0 0 5px rgba(255,80,100,0.6));
-  transition: transform 0.2s, filter 0.2s;
+.heart-full {
+  display: flex;
+  filter: drop-shadow(0 0 7px rgba(255,60,90,0.75));
 }
 
-.heart-icon.lost {
-  filter: none;
-  opacity: 0.18;
+.heart-lost {
+  display: flex;
+  opacity: 0.22;
 }
 
 /* ═══════════════════════════════════════════
@@ -666,23 +665,49 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
+  gap: 1px;
+  background: rgba(0,222,255,0.08);
+  border: 1.5px solid rgba(0,222,255,0.32);
+  border-radius: 14px;
   cursor: pointer;
-  padding: 6px 10px;
-  transition: background 0.1s;
-  min-width: 52px;
+  padding: 6px 12px 5px;
+  transition: all 0.1s ease;
+  min-width: 62px;
+  box-shadow: 0 0 14px rgba(0,222,255,0.08), inset 0 1px 0 rgba(0,222,255,0.15);
 }
-.hint-btn.disabled { opacity: 0.28; cursor: default; }
-.hint-btn:not(.disabled):active { background: rgba(0,222,255,0.12); }
-
-.hint-btn .hint-count {
-  font-size: 10px;
-  font-weight: 800;
+.hint-btn-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   color: var(--hint);
-  letter-spacing: 0.3px;
+}
+.hint-btn.inactive {
+  opacity: 0.28;
+  cursor: default;
+  border-color: var(--glass-border);
+  background: var(--glass);
+  box-shadow: none;
+}
+.hint-btn.inactive .hint-btn-row { color: var(--text3); }
+.hint-btn:not(.inactive):active {
+  background: rgba(0,222,255,0.18);
+  transform: scale(0.94);
+  box-shadow: 0 0 20px rgba(0,222,255,0.2);
+}
+.hint-btn .hint-count {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--hint);
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+.hint-label {
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--hint);
+  opacity: 0.6;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
 }
 
 /* ═══════════════════════════════════════════
@@ -696,7 +721,7 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; }
   align-items: center;
   justify-content: center;
   gap: 0;
-  padding: 24px 24px max(24px, env(safe-area-inset-bottom));
+  padding: max(24px, env(safe-area-inset-top)) 24px max(24px, env(safe-area-inset-bottom));
   position: relative;
   overflow: hidden;
   background: var(--bg);
@@ -1362,8 +1387,8 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; }
 }
 
 .tutorial-visual {
-  width: 200px;
-  height: 200px;
+  width: min(300px, 88vw);
+  height: min(240px, 72vw);
   background: var(--glass);
   border-radius: 24px;
   border: 1px solid var(--glass-border);
@@ -1372,7 +1397,7 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; }
   justify-content: center;
   box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255,255,255,0.08);
   flex-shrink: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .tutorial-step-num {

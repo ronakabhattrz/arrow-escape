@@ -19,9 +19,9 @@ export function HomeScreen() {
   const dailyDone = isDailyCompleted(lastDailyDate);
 
   useEffect(() => {
-    if (!removeAds) showBanner();
+    if (!removeAds && hasSeenTutorial) showBanner();
     return () => { hideBanner(); };
-  }, [removeAds]);
+  }, [removeAds, hasSeenTutorial]);
 
   useEffect(() => {
     const unsub = useProgressStore.persist.onFinishHydration(() => {

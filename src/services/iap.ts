@@ -1,8 +1,8 @@
 const REVENUECAT_IOS_KEY = 'app4f8593bb6d';
 
 export const PRODUCT_IDS = {
-  removeAds: 'com.ronakbhatt.arrowescape.removeads',
-  hints20: 'com.ronakbhatt.arrowescape.hints20',
+  removeAds: 'arrow_escape_remove_ads',
+  hints20: 'arrow_escape_hints_20',
 };
 
 const ENTITLEMENT_IDS = {

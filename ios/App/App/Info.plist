@@ -48,9 +48,7 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 	<key>GADApplicationIdentifier</key>
-	<!-- TODO: Replace with your real AdMob App ID from https://admob.google.com -->
-	<!-- Format: ca-app-pub-XXXXXXXXXXXXXXXX~XXXXXXXXXX -->
-	<string>ca-app-pub-3940256099942544~1458002511</string>
+	<string>ca-app-pub-5467558631588617~1397587581</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>

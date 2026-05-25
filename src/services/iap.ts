@@ -16,7 +16,7 @@ let purchasesAvailable = false;
 export async function initIAP(): Promise<void> {
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { Purchases } = await import('@revenuecat/purchases-capacitor' as any);
+    const { Purchases } = await import(/* @vite-ignore */ '@revenuecat/purchases-capacitor' as any);
     const apiKey = REVENUECAT_IOS_KEY; // TODO: use Capacitor.getPlatform() to select android key
     await Purchases.configure({ apiKey });
     purchasesAvailable = true;
@@ -29,7 +29,7 @@ export async function purchaseRemoveAds(): Promise<boolean> {
   if (!purchasesAvailable) return false;
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { Purchases } = await import('@revenuecat/purchases-capacitor' as any);
+    const { Purchases } = await import(/* @vite-ignore */ '@revenuecat/purchases-capacitor' as any);
     const offerings = await Purchases.getOfferings();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pkg = offerings.current?.availablePackages.find((p: any) => p.product.identifier === PRODUCT_IDS.removeAds);
@@ -45,7 +45,7 @@ export async function purchaseHints20(): Promise<boolean> {
   if (!purchasesAvailable) return false;
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { Purchases } = await import('@revenuecat/purchases-capacitor' as any);
+    const { Purchases } = await import(/* @vite-ignore */ '@revenuecat/purchases-capacitor' as any);
     const offerings = await Purchases.getOfferings();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pkg = offerings.current?.availablePackages.find((p: any) => p.product.identifier === PRODUCT_IDS.hints20);
@@ -61,7 +61,7 @@ export async function restorePurchases(): Promise<{ removeAds: boolean }> {
   if (!purchasesAvailable) return { removeAds: false };
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { Purchases } = await import('@revenuecat/purchases-capacitor' as any);
+    const { Purchases } = await import(/* @vite-ignore */ '@revenuecat/purchases-capacitor' as any);
     const info = await Purchases.restorePurchases();
     const removeAds = !!info.customerInfo.entitlements.active[PRODUCT_IDS.removeAds];
     return { removeAds };

@@ -1,9 +1,6 @@
 import { useEffect } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useSettingsStore } from './store/settingsStore';
-import { initAdMob } from './services/admob';
-import { initIAP } from './services/iap';
-
 import { HomeScreen } from './screens/HomeScreen';
 import { LevelSelect } from './screens/LevelSelect';
 import { GameBoard } from './screens/GameBoard';
@@ -20,8 +17,6 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    initAdMob();
-    initIAP();
   }, [theme]);
 
   return (

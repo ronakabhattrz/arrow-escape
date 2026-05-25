@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { useSettingsStore } from '../store/settingsStore';
 import { useProgressStore } from '../store/progressStore';
-import { purchaseRemoveAds, purchaseHints20, restorePurchases } from '../services/iap';
+import { purchaseRemoveAds, purchaseHints20, restorePurchases, fetchPrices } from '../services/iap';
 import type { Theme } from '../types';
 
 const THEMES: { key: Theme; bg: string; border: string }[] = [
@@ -15,6 +16,11 @@ export function Settings() {
   const navigate = useNavigate();
   const { theme, soundEnabled, hapticsEnabled, setTheme, toggleSound, toggleHaptics } = useSettingsStore();
   const { removeAds, hintsOwned, setRemoveAds, addHints } = useProgressStore();
+  const [prices, setPrices] = useState({ removeAds: '$4.99', hints20: '$0.99' });
+
+  useEffect(() => {
+    fetchPrices().then(setPrices);
+  }, []);
 
   const handleRemoveAds = async () => {
     const ok = await purchaseRemoveAds();
@@ -80,7 +86,7 @@ export function Settings() {
                 <span className="settings-row-title">Remove Ads</span>
                 <span className="settings-row-sub">One-time · Remove all ads forever</span>
               </div>
-              <button className="btn btn-primary btn-sm" onClick={handleRemoveAds}>$4.99</button>
+              <button className="btn btn-primary btn-sm" onClick={handleRemoveAds}>{prices.removeAds}</button>
             </div>
           ) : (
             <div className="settings-row">
@@ -92,7 +98,7 @@ export function Settings() {
               <span className="settings-row-title">Hint Pack</span>
               <span className="settings-row-sub">20 hints · You have {hintsOwned}</span>
             </div>
-            <button className="btn btn-secondary btn-sm" onClick={handleHints}>$0.99</button>
+            <button className="btn btn-secondary btn-sm" onClick={handleHints}>{prices.hints20}</button>
           </div>
           <div className="settings-row">
             <div className="settings-row-left">

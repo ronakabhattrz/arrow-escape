@@ -54,6 +54,29 @@ export async function purchaseHints20(): Promise<boolean> {
   return purchaseById(PRODUCT_IDS.hints20);
 }
 
+export async function fetchPrices(): Promise<{ removeAds: string; hints20: string }> {
+  const fallback = { removeAds: '$4.99', hints20: '$0.99' };
+  try {
+    if (!await ensureConfigured()) return fallback;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (Purchases as any).getProducts({
+      productIdentifiers: [PRODUCT_IDS.removeAds, PRODUCT_IDS.hints20],
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const products: any[] = result?.products ?? result ?? [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const find = (id: string) => products.find((p: any) => p.identifier === id);
+    const removeAdsProduct = find(PRODUCT_IDS.removeAds);
+    const hints20Product = find(PRODUCT_IDS.hints20);
+    return {
+      removeAds: removeAdsProduct?.priceString ?? fallback.removeAds,
+      hints20: hints20Product?.priceString ?? fallback.hints20,
+    };
+  } catch {
+    return fallback;
+  }
+}
+
 export async function restorePurchases(): Promise<{ removeAds: boolean }> {
   try {
     if (!await ensureConfigured()) return { removeAds: false };

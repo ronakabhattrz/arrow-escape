@@ -19,12 +19,10 @@ export function Settings() {
   const handleRemoveAds = async () => {
     const ok = await purchaseRemoveAds();
     if (ok) { setRemoveAds(true); return; }
-    window.alert('Coming soon!\n\nIn-app purchases will be available in the next update.');
   };
   const handleHints = async () => {
     const ok = await purchaseHints20();
     if (ok) { addHints(20); return; }
-    window.alert('Coming soon!\n\nIn-app purchases will be available in the next update.');
   };
   const handleRestore = async () => {
     const r = await restorePurchases();

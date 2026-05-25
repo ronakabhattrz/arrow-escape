@@ -11,20 +11,27 @@ const ENTITLEMENT_IDS = {
   removeAds: 'remove_ads',
 };
 
-let purchasesAvailable = false;
+let configured = false;
 
-export async function initIAP(): Promise<void> {
+async function ensureConfigured(): Promise<boolean> {
+  if (configured) return true;
   try {
     await Purchases.configure({ apiKey: REVENUECAT_IOS_KEY });
-    purchasesAvailable = true;
+    configured = true;
+    return true;
   } catch {
-    // Web — native bridge not available
+    return false;
   }
 }
 
+// Called at startup — failure is fine, ensureConfigured handles retry
+export async function initIAP(): Promise<void> {
+  await ensureConfigured();
+}
+
 export async function purchaseRemoveAds(): Promise<boolean> {
-  if (!purchasesAvailable) return false;
   try {
+    if (!await ensureConfigured()) return false;
     const offerings = await Purchases.getOfferings();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pkg = offerings.current?.availablePackages.find((p: any) => p.product.identifier === PRODUCT_IDS.removeAds);
@@ -37,8 +44,8 @@ export async function purchaseRemoveAds(): Promise<boolean> {
 }
 
 export async function purchaseHints20(): Promise<boolean> {
-  if (!purchasesAvailable) return false;
   try {
+    if (!await ensureConfigured()) return false;
     const offerings = await Purchases.getOfferings();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pkg = offerings.current?.availablePackages.find((p: any) => p.product.identifier === PRODUCT_IDS.hints20);
@@ -51,8 +58,8 @@ export async function purchaseHints20(): Promise<boolean> {
 }
 
 export async function restorePurchases(): Promise<{ removeAds: boolean }> {
-  if (!purchasesAvailable) return { removeAds: false };
   try {
+    if (!await ensureConfigured()) return { removeAds: false };
     const info = await Purchases.restorePurchases();
     const removeAds = !!info.customerInfo.entitlements.active[ENTITLEMENT_IDS.removeAds];
     return { removeAds };

@@ -137,7 +137,7 @@ export function HomeScreen() {
         )}
       </div>
 
-      {!removeAds && <div className="banner-ad">Advertisement</div>}
+      {!removeAds && <div style={{ height: 50, flexShrink: 0 }} />}
     </div>
   );
 }

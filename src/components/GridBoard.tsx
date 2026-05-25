@@ -19,8 +19,11 @@ export function GridBoard({ grid, hintArrowId, onTapArrow }: Props) {
     const update = () => {
       if (!containerRef.current) return;
       const { width, height } = containerRef.current.getBoundingClientRect();
-      const available = Math.min(width, height) - 24;
-      setCellSize(Math.floor((available - (size + 1) * 4) / size));
+      const BOARD_PAD = 28;
+      const CELL_GAP = 6;
+      const boardMax = Math.min(width, height);
+      const cs = Math.floor((boardMax - BOARD_PAD - CELL_GAP * (size - 1)) / size);
+      setCellSize(Math.max(cs, 20));
     };
     update();
     const ro = new ResizeObserver(update);
@@ -35,10 +38,12 @@ export function GridBoard({ grid, hintArrowId, onTapArrow }: Props) {
     }
   };
 
-  const boardWidth = cellSize * size + 4 * (size + 1);
+  const CELL_GAP = 6;
+  const BOARD_PAD = 28;
+  const boardWidth = cellSize * size + CELL_GAP * (size - 1) + BOARD_PAD;
 
   return (
-    <div ref={containerRef} style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+    <div ref={containerRef} style={{ flex: 1, alignSelf: 'stretch', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
       <div
         className="grid-board"
         style={{

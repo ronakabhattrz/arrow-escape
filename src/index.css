@@ -416,7 +416,8 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; }
   padding: 12px;
   position: relative;
   background:
-    radial-gradient(ellipse 70% 50% at 50% 50%, var(--accent-glow) 0%, transparent 65%),
+    radial-gradient(ellipse 90% 60% at 50% 50%, var(--accent-glow) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 20% 80%, var(--danger-glow) 0%, transparent 60%),
     var(--bg);
 }
 
@@ -1388,7 +1389,9 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; }
 
 .tutorial-visual {
   width: min(300px, 88vw);
-  height: min(240px, 72vw);
+  min-height: 180px;
+  height: auto;
+  padding: 24px 16px;
   background: var(--glass);
   border-radius: 24px;
   border: 1px solid var(--glass-border);

@@ -111,37 +111,60 @@ function BlockVisual() {
   );
 }
 
+function HeartSVG({ filled }: { filled: boolean }) {
+  return (
+    <svg viewBox="0 0 24 24" width="32" height="32" fill="none">
+      <path
+        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+        fill={filled ? 'var(--danger)' : 'none'}
+        stroke={filled ? 'var(--danger)' : 'var(--text3)'}
+        strokeWidth={1.8}
+        style={filled ? { filter: 'drop-shadow(0 0 6px rgba(255,60,90,0.7))' } : undefined}
+      />
+    </svg>
+  );
+}
+
+function HintSVG() {
+  return (
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="var(--hint)" strokeWidth="1.8" />
+      <path d="M12 7v6M12 16v1" stroke="var(--hint)" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function HeartsVisual() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20, alignItems: 'center' }}>
-      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+      <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
         {[1, 2, 3].map(i => (
-          <motion.span
+          <motion.div
             key={i}
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: i * 0.1, type: 'spring', stiffness: 300, damping: 12 }}
-            style={{ fontSize: 34 }}
           >
-            ❤️
-          </motion.span>
+            <HeartSVG filled />
+          </motion.div>
         ))}
         {[4, 5].map(i => (
-          <span key={i} style={{ fontSize: 34, opacity: 0.2 }}>🤍</span>
+          <HeartSVG key={i} filled={false} />
         ))}
       </div>
       <div style={{
         background: 'var(--surface)',
-        border: '1.5px solid var(--border)',
+        border: '1.5px solid rgba(0,222,255,0.25)',
         borderRadius: 16,
         padding: '10px 24px',
         display: 'flex',
         alignItems: 'center',
         gap: 10,
+        boxShadow: '0 0 16px rgba(0,222,255,0.08)',
       }}>
-        <span style={{ fontSize: 24 }}>💡</span>
+        <HintSVG />
         <div>
-          <div style={{ fontWeight: 800, color: 'var(--accent)', fontSize: 16 }}>5 Hints</div>
+          <div style={{ fontWeight: 800, color: 'var(--hint)', fontSize: 16 }}>5 Hints</div>
           <div style={{ fontSize: 11, color: 'var(--text2)' }}>shows next valid move</div>
         </div>
       </div>

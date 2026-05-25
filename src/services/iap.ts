@@ -5,6 +5,10 @@ export const PRODUCT_IDS = {
   hints20: 'com.ronakbhatt.arrowescape.hints20',
 };
 
+const ENTITLEMENT_IDS = {
+  removeAds: 'remove_ads',
+};
+
 let purchasesAvailable = false;
 
 export async function initIAP(): Promise<void> {
@@ -57,7 +61,7 @@ export async function restorePurchases(): Promise<{ removeAds: boolean }> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { Purchases } = await import(/* @vite-ignore */ '@revenuecat/purchases-capacitor' as any);
     const info = await Purchases.restorePurchases();
-    const removeAds = !!info.customerInfo.entitlements.active[PRODUCT_IDS.removeAds];
+    const removeAds = !!info.customerInfo.entitlements.active[ENTITLEMENT_IDS.removeAds];
     return { removeAds };
   } catch {
     return { removeAds: false };

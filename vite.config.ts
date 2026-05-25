@@ -20,9 +20,5 @@ export default defineConfig(({ command }) => ({
   ],
   build: {
     outDir: 'dist',
-    rollupOptions: {
-      // RevenueCat is added post-build via Capacitor — not bundled
-      external: ['@revenuecat/purchases-capacitor'],
-    },
   },
 }))

@@ -28,41 +28,30 @@ export async function initIAP(): Promise<void> {
   await ensureConfigured();
 }
 
-export async function purchaseRemoveAds(): Promise<boolean> {
+async function purchaseById(productId: string): Promise<boolean> {
+  if (!await ensureConfigured()) return false;
   try {
-    if (!await ensureConfigured()) return false;
-    // v13 returns { offerings: { current, all } }
-    const result = await Purchases.getOfferings();
+    // Fetch the store product directly — no Offerings setup required
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const offeringsObj = (result as any).offerings ?? result;
+    const result = await (Purchases as any).getProducts({ productIdentifiers: [productId] });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pkg = offeringsObj.current?.availablePackages?.find((p: any) =>
-      p.product?.identifier === PRODUCT_IDS.removeAds
-    );
-    if (!pkg) return false;
-    await Purchases.purchasePackage({ aPackage: pkg });
+    const productsArr = result?.products ?? result;
+    const product = Array.isArray(productsArr) ? productsArr[0] : null;
+    if (!product) return false;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (Purchases as any).purchaseStoreProduct({ product });
     return true;
   } catch {
     return false;
   }
 }
 
+export async function purchaseRemoveAds(): Promise<boolean> {
+  return purchaseById(PRODUCT_IDS.removeAds);
+}
+
 export async function purchaseHints20(): Promise<boolean> {
-  try {
-    if (!await ensureConfigured()) return false;
-    const result = await Purchases.getOfferings();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const offeringsObj = (result as any).offerings ?? result;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pkg = offeringsObj.current?.availablePackages?.find((p: any) =>
-      p.product?.identifier === PRODUCT_IDS.hints20
-    );
-    if (!pkg) return false;
-    await Purchases.purchasePackage({ aPackage: pkg });
-    return true;
-  } catch {
-    return false;
-  }
+  return purchaseById(PRODUCT_IDS.hints20);
 }
 
 export async function restorePurchases(): Promise<{ removeAds: boolean }> {

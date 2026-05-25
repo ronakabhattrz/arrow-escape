@@ -24,7 +24,6 @@ async function ensureConfigured(): Promise<boolean> {
   }
 }
 
-// Called at startup — failure is fine, ensureConfigured handles retry
 export async function initIAP(): Promise<void> {
   await ensureConfigured();
 }
@@ -32,9 +31,14 @@ export async function initIAP(): Promise<void> {
 export async function purchaseRemoveAds(): Promise<boolean> {
   try {
     if (!await ensureConfigured()) return false;
-    const offerings = await Purchases.getOfferings();
+    // v13 returns { offerings: { current, all } }
+    const result = await Purchases.getOfferings();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pkg = offerings.current?.availablePackages.find((p: any) => p.product.identifier === PRODUCT_IDS.removeAds);
+    const offeringsObj = (result as any).offerings ?? result;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const pkg = offeringsObj.current?.availablePackages?.find((p: any) =>
+      p.product?.identifier === PRODUCT_IDS.removeAds
+    );
     if (!pkg) return false;
     await Purchases.purchasePackage({ aPackage: pkg });
     return true;
@@ -46,9 +50,13 @@ export async function purchaseRemoveAds(): Promise<boolean> {
 export async function purchaseHints20(): Promise<boolean> {
   try {
     if (!await ensureConfigured()) return false;
-    const offerings = await Purchases.getOfferings();
+    const result = await Purchases.getOfferings();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pkg = offerings.current?.availablePackages.find((p: any) => p.product.identifier === PRODUCT_IDS.hints20);
+    const offeringsObj = (result as any).offerings ?? result;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const pkg = offeringsObj.current?.availablePackages?.find((p: any) =>
+      p.product?.identifier === PRODUCT_IDS.hints20
+    );
     if (!pkg) return false;
     await Purchases.purchasePackage({ aPackage: pkg });
     return true;
@@ -60,8 +68,10 @@ export async function purchaseHints20(): Promise<boolean> {
 export async function restorePurchases(): Promise<{ removeAds: boolean }> {
   try {
     if (!await ensureConfigured()) return { removeAds: false };
-    const info = await Purchases.restorePurchases();
-    const removeAds = !!info.customerInfo.entitlements.active[ENTITLEMENT_IDS.removeAds];
+    const result = await Purchases.restorePurchases();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const customerInfo = (result as any).customerInfo ?? result;
+    const removeAds = !!customerInfo.entitlements?.active?.[ENTITLEMENT_IDS.removeAds];
     return { removeAds };
   } catch {
     return { removeAds: false };

@@ -1,14 +1,8 @@
-// RevenueCat IAP service wrapper
-// TODO: Install @revenuecat/purchases-capacitor and add your API keys
-
-// TODO: Replace with your RevenueCat API keys
-// TODO: Replace with your RevenueCat API keys from https://app.revenuecat.com
-const REVENUECAT_IOS_KEY = 'TODO_YOUR_REVENUECAT_IOS_KEY';
-// TODO: const REVENUECAT_ANDROID_KEY = 'TODO_YOUR_REVENUECAT_ANDROID_KEY';
+const REVENUECAT_IOS_KEY = 'app4f8593bb6d';
 
 export const PRODUCT_IDS = {
-  removeAds: 'arrow_escape_remove_ads',
-  hints20: 'arrow_escape_hints_20',
+  removeAds: 'com.ronakbhatt.arrowescape.removeads',
+  hints20: 'com.ronakbhatt.arrowescape.hints20',
 };
 
 let purchasesAvailable = false;

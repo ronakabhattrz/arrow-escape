@@ -16,11 +16,23 @@ export function GameBoard() {
   const mode = (location.state as { mode?: string })?.mode ?? 'campaign';
 
   const { levelData, grid, hearts, hintArrowId, isComplete, isFailed,
-    tapArrow, useHint, undoMove, restartLevel, clearHint } = useGameStore();
+    tapArrow, useHint, undoMove, restartLevel, clearHint, syncHints } = useGameStore();
   const { hintsOwned, recordInvalidMove } = useProgressStore();
   const { soundEnabled, hapticsEnabled } = useSettingsStore();
 
   useEffect(() => { if (!levelData) navigate('/'); }, [levelData, navigate]);
+
+  // Sync hint count once progressStore finishes hydrating from storage
+  useEffect(() => {
+    const unsub = useProgressStore.persist.onFinishHydration(() => {
+      syncHints(useProgressStore.getState().hintsOwned);
+    });
+    if (useProgressStore.persist.hasHydrated()) {
+      syncHints(useProgressStore.getState().hintsOwned);
+    }
+    return unsub;
+  }, [syncHints]);
+
   useEffect(() => { if (isComplete) navigate('/level-complete', { state: { mode } }); }, [isComplete, navigate, mode]);
   useEffect(() => { if (isFailed) navigate('/level-failed', { state: { mode } }); }, [isFailed, navigate, mode]);
 

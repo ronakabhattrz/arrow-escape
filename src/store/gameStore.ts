@@ -25,6 +25,7 @@ interface GameState {
   starsEarned: number;
 
   loadLevel: (level: LevelData, hintsFromStore?: number) => void;
+  syncHints: (hintsOwned: number) => void;
   tapArrow: (id: string) => 'valid' | 'invalid' | 'complete';
   useHint: () => string | null;
   undoMove: () => void;
@@ -62,6 +63,10 @@ export const useGameStore = create<GameState>((set, get) => ({
       hintArrowId: null,
       starsEarned: 0,
     });
+  },
+
+  syncHints: (hintsOwned) => {
+    set({ hintsRemaining: hintsOwned });
   },
 
   tapArrow: (id) => {

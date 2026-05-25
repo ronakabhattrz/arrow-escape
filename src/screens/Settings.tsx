@@ -16,9 +16,21 @@ export function Settings() {
   const { theme, soundEnabled, hapticsEnabled, setTheme, toggleSound, toggleHaptics } = useSettingsStore();
   const { removeAds, hintsOwned, setRemoveAds, addHints } = useProgressStore();
 
-  const handleRemoveAds = async () => { if (await purchaseRemoveAds()) setRemoveAds(true); };
-  const handleHints = async () => { if (await purchaseHints20()) addHints(20); };
-  const handleRestore = async () => { const r = await restorePurchases(); if (r.removeAds) setRemoveAds(true); };
+  const handleRemoveAds = async () => {
+    const ok = await purchaseRemoveAds();
+    if (ok) { setRemoveAds(true); return; }
+    window.alert('Coming soon!\n\nIn-app purchases will be available in the next update.');
+  };
+  const handleHints = async () => {
+    const ok = await purchaseHints20();
+    if (ok) { addHints(20); return; }
+    window.alert('Coming soon!\n\nIn-app purchases will be available in the next update.');
+  };
+  const handleRestore = async () => {
+    const r = await restorePurchases();
+    if (r.removeAds) { setRemoveAds(true); return; }
+    window.alert('No purchases found to restore.');
+  };
 
   return (
     <div className="app">

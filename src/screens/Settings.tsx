@@ -114,7 +114,7 @@ export function Settings() {
             <span className="settings-row-title">How to Play</span>
             <button className="btn btn-ghost btn-sm" onClick={() => navigate('/tutorial')}>Open</button>
           </div>
-          <div className="settings-row" style={{ cursor: 'pointer' }} onClick={() => window.open('https://sites.google.com/view/arrow-escape-privacy', '_blank', 'noopener,noreferrer')}>
+          <div className="settings-row" style={{ cursor: 'pointer' }} onClick={() => window.open('https://gist.github.com/ronakabhattrz/09a4059d616135add8cfcdc730992652', '_blank', 'noopener,noreferrer')}>
             <span className="settings-row-title">Privacy Policy</span>
             <span style={{ color: 'var(--accent)', fontSize: 16 }}>→</span>
           </div>

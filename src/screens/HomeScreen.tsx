@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useProgressStore } from '../store/progressStore';
-import { showBanner } from '../services/admob';
+import { showBanner, hideBanner } from '../services/admob';
 import { isDailyCompleted } from '../game/dailyPuzzle';
 import { IconPlay, IconStats, IconSettings, IconCalendar, IconInfinity, IconBook } from '../components/Icons';
 
@@ -20,6 +20,7 @@ export function HomeScreen() {
 
   useEffect(() => {
     if (!removeAds) showBanner();
+    return () => { hideBanner(); };
   }, [removeAds]);
 
   useEffect(() => {

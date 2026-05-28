@@ -13,9 +13,9 @@ const ADS_ENABLED = true;
 
 const AD_UNITS = {
   ios: {
-    banner:       'ca-app-pub-5467558631588617/4903763925',
-    interstitial: 'ca-app-pub-5467558631588617/5589782335',
-    rewarded:     'ca-app-pub-5467558631588617/1973970955',
+    banner:       'ca-app-pub-7441428596385386/1400838461',
+    interstitial: 'ca-app-pub-7441428596385386/3720869724',
+    rewarded:     'ca-app-pub-7441428596385386/9871345109',
   },
   android: {
     banner:       'ca-app-pub-5467558631588617/5825814962',

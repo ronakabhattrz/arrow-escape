@@ -50,7 +50,7 @@ export async function showBanner(): Promise<void> {
       adSize: BannerAdSize.ADAPTIVE_BANNER,
       position: BannerAdPosition.BOTTOM_CENTER,
       margin: 0,
-      isTesting: true,
+      isTesting: false,
     };
     await AdMob.showBanner(options);
   } catch {

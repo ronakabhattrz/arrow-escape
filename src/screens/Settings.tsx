@@ -120,7 +120,7 @@ export function Settings() {
           </div>
           <div className="settings-row">
             <span className="settings-row-title">Version</span>
-            <span style={{ color: 'var(--text3)', fontSize: 14 }}>1.1.0</span>
+            <span style={{ color: 'var(--text3)', fontSize: 14 }}>1.0.1</span>
           </div>
           <div className="settings-row">
             <span className="settings-row-title">Made by</span>

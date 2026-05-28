@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useGameStore } from '../store/gameStore';
 import { useProgressStore } from '../store/progressStore';
-import { showInterstitial } from '../services/admob';
+import { showInterstitial, showRewarded } from '../services/admob';
 import levelsData from '../data/levels.json';
 import type { LevelData } from '../types';
 
@@ -21,7 +21,16 @@ export function LevelComplete() {
   const mode = (location.state as { mode?: string })?.mode ?? 'campaign';
 
   const { levelData, starsEarned, loadLevel } = useGameStore();
-  const { totalCompleted, hintsOwned, removeAds } = useProgressStore();
+  const { totalCompleted, hintsOwned, removeAds, addHints } = useProgressStore();
+  const [rewardClaimed, setRewardClaimed] = useState(false);
+  const [rewardLoading, setRewardLoading] = useState(false);
+
+  const handleWatchAd = async () => {
+    setRewardLoading(true);
+    const rewarded = await showRewarded();
+    setRewardLoading(false);
+    if (rewarded) { addHints(2); setRewardClaimed(true); }
+  };
 
   useEffect(() => {
     if (!removeAds && totalCompleted % 3 === 0) showInterstitial();
@@ -91,6 +100,20 @@ export function LevelComplete() {
           <button className="btn btn-primary btn-full btn-lg" onClick={handleNext}>
             {mode === 'infinite' ? '▶ Next Puzzle' : nextLevel ? '▶ Next Level' : '▶ All Levels'}
           </button>
+          {!removeAds && !rewardClaimed && (
+            <button
+              className="btn btn-ghost btn-full"
+              onClick={handleWatchAd}
+              disabled={rewardLoading}
+            >
+              {rewardLoading ? 'Loading...' : '🎁 Watch ad for +2 hints'}
+            </button>
+          )}
+          {rewardClaimed && (
+            <p style={{ textAlign: 'center', color: 'var(--success)', fontSize: 14, margin: 0 }}>
+              ✅ +2 hints added!
+            </p>
+          )}
           <div className="complete-row">
             <button className="btn btn-secondary btn-full" onClick={() => {
               const s = useGameStore.getState();

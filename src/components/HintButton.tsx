@@ -1,5 +1,3 @@
-import { IconHint } from './Icons';
-
 interface Props { count: number; onUse: () => void; disabled?: boolean; }
 
 export function HintButton({ count, onUse, disabled }: Props) {
@@ -11,10 +9,10 @@ export function HintButton({ count, onUse, disabled }: Props) {
       onClick={inactive ? undefined : onUse}
     >
       <div className="hint-btn-row">
-        <IconHint size={16} />
+        {/* Hexagon unicode + count */}
+        <span style={{ fontSize: 14, lineHeight: 1 }}>⬡</span>
         <span className="hint-count">{disabled ? '—' : count}</span>
       </div>
-      <span className="hint-label">HINTS</span>
     </button>
   );
 }

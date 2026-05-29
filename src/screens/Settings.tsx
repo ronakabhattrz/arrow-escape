@@ -5,11 +5,11 @@ import { useProgressStore } from '../store/progressStore';
 import { purchaseRemoveAds, purchaseHints20, restorePurchases, fetchPrices } from '../services/iap';
 import type { Theme } from '../types';
 
-const THEMES: { key: Theme; bg: string; border: string }[] = [
-  { key: 'dark',   bg: '#0A0E1A', border: '#3B82F6' },
-  { key: 'light',  bg: '#F0F4FF', border: '#2563EB' },
-  { key: 'sepia',  bg: '#1A1208', border: '#D97706' },
-  { key: 'forest', bg: '#071410', border: '#10B981' },
+const THEMES: { key: Theme; bg: string }[] = [
+  { key: 'dark',   bg: '#04060D' },
+  { key: 'light',  bg: '#0B1120' },
+  { key: 'sepia',  bg: '#0D0905' },
+  { key: 'forest', bg: '#030F07' },
 ];
 
 export function Settings() {
@@ -39,25 +39,35 @@ export function Settings() {
   return (
     <div className="app">
       <div className="hud">
-        <button className="back-btn" onClick={() => navigate('/')}>← Back</button>
-        <span style={{ fontWeight: 800, fontSize: 17 }}>Settings</span>
+        <button className="back-btn" onClick={() => navigate('/')}>← BACK</button>
+        <span style={{
+          fontFamily: "'Barlow Condensed', sans-serif",
+          fontWeight: 900,
+          fontSize: 15,
+          letterSpacing: '3px',
+          textTransform: 'uppercase',
+          color: '#E8ECF4',
+        }}>SETTINGS</span>
         <div style={{ width: 60 }} />
       </div>
 
       <div className="scroll-container">
-        <div className="settings-section-label">Appearance</div>
+        <div className="settings-section-label">APPEARANCE</div>
         <div className="settings-card">
           <div className="settings-row">
             <div className="settings-row-left">
-              <span className="settings-row-title">Theme</span>
-              <span className="settings-row-sub">Choose your visual style</span>
+              <span className="settings-row-title">THEME</span>
+              <span className="settings-row-sub">Visual style</span>
             </div>
             <div className="theme-picker">
               {THEMES.map(t => (
                 <button
                   key={t.key}
                   className={`theme-swatch${theme === t.key ? ' active' : ''}`}
-                  style={{ background: t.bg, borderColor: theme === t.key ? t.border : 'transparent' }}
+                  style={{
+                    background: t.bg,
+                    borderColor: theme === t.key ? '#6EE7F7' : 'transparent',
+                  }}
                   onClick={() => setTheme(t.key)}
                   title={t.key}
                 />
@@ -66,65 +76,77 @@ export function Settings() {
           </div>
           <div className="settings-row">
             <div className="settings-row-left">
-              <span className="settings-row-title">Sound Effects</span>
+              <span className="settings-row-title">SOUND EFFECTS</span>
             </div>
             <button className={`toggle${soundEnabled ? ' on' : ''}`} onClick={toggleSound} />
           </div>
           <div className="settings-row">
             <div className="settings-row-left">
-              <span className="settings-row-title">Haptic Feedback</span>
+              <span className="settings-row-title">HAPTIC FEEDBACK</span>
             </div>
             <button className={`toggle${hapticsEnabled ? ' on' : ''}`} onClick={toggleHaptics} />
           </div>
         </div>
 
-        <div className="settings-section-label">Purchases</div>
+        <div className="settings-section-label">PURCHASES</div>
         <div className="settings-card">
           {!removeAds ? (
             <div className="settings-row">
               <div className="settings-row-left">
-                <span className="settings-row-title">Remove Ads</span>
+                <span className="settings-row-title">REMOVE ADS</span>
                 <span className="settings-row-sub">One-time · Remove all ads forever</span>
               </div>
               <button className="btn btn-primary btn-sm" onClick={handleRemoveAds}>{prices.removeAds}</button>
             </div>
           ) : (
             <div className="settings-row">
-              <span className="settings-row-title">✅ Ads Removed</span>
+              <span className="settings-row-title" style={{ color: '#6EE7F7' }}>ADS REMOVED</span>
             </div>
           )}
           <div className="settings-row">
             <div className="settings-row-left">
-              <span className="settings-row-title">Hint Pack</span>
+              <span className="settings-row-title">HINT PACK</span>
               <span className="settings-row-sub">20 hints · You have {hintsOwned}</span>
             </div>
             <button className="btn btn-secondary btn-sm" onClick={handleHints}>{prices.hints20}</button>
           </div>
           <div className="settings-row">
             <div className="settings-row-left">
-              <span className="settings-row-title">Restore Purchases</span>
+              <span className="settings-row-title">RESTORE PURCHASES</span>
             </div>
-            <button className="btn btn-ghost btn-sm" onClick={handleRestore}>Restore</button>
+            <button className="btn btn-ghost btn-sm" onClick={handleRestore}>RESTORE</button>
           </div>
         </div>
 
-        <div className="settings-section-label">About</div>
+        <div className="settings-section-label">ABOUT</div>
         <div className="settings-card" style={{ marginBottom: 32 }}>
           <div className="settings-row">
-            <span className="settings-row-title">How to Play</span>
-            <button className="btn btn-ghost btn-sm" onClick={() => navigate('/tutorial')}>Open</button>
+            <span className="settings-row-title">HOW TO PLAY</span>
+            <button className="btn btn-ghost btn-sm" onClick={() => navigate('/tutorial')}>OPEN</button>
           </div>
           <div className="settings-row" style={{ cursor: 'pointer' }} onClick={() => window.open('https://gist.github.com/ronakabhattrz/09a4059d616135add8cfcdc730992652', '_blank', 'noopener,noreferrer')}>
-            <span className="settings-row-title">Privacy Policy</span>
-            <span style={{ color: 'var(--accent)', fontSize: 16 }}>→</span>
+            <span className="settings-row-title">PRIVACY POLICY</span>
+            <span style={{ color: '#6EE7F7', fontSize: 16 }}>→</span>
           </div>
           <div className="settings-row">
-            <span className="settings-row-title">Version</span>
-            <span style={{ color: 'var(--text3)', fontSize: 14 }}>1.0.1</span>
+            <span className="settings-row-title">VERSION</span>
+            <span style={{
+              fontFamily: "'Barlow Condensed', sans-serif",
+              color: '#3A4560',
+              fontSize: 13,
+              fontWeight: 900,
+              letterSpacing: '1px',
+            }}>1.0.1</span>
           </div>
           <div className="settings-row">
-            <span className="settings-row-title">Made by</span>
-            <span style={{ color: 'var(--text3)', fontSize: 14 }}>Ronak Bhatt</span>
+            <span className="settings-row-title">MADE BY</span>
+            <span style={{
+              fontFamily: "'Barlow Condensed', sans-serif",
+              color: '#3A4560',
+              fontSize: 13,
+              fontWeight: 900,
+              letterSpacing: '1px',
+            }}>RONAK BHATT</span>
           </div>
         </div>
       </div>

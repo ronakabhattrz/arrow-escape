@@ -9,7 +9,7 @@ import { HintButton } from '../components/HintButton';
 import { SoundService } from '../services/sound';
 import { HapticsService } from '../services/haptics';
 import { IconHome, IconUndo, IconRestart } from '../components/Icons';
-import { AuroraBackground } from '../components/AuroraBackground';
+import { DeepSpaceBg } from '../components/DeepSpaceBg';
 
 export function GameBoard() {
   const navigate = useNavigate();
@@ -57,12 +57,14 @@ export function GameBoard() {
 
   if (!levelData || grid.length === 0) return null;
 
-  const modeLabel = mode === 'daily' ? 'Daily' : mode === 'infinite' ? 'Infinite' : 'Level';
-  const modeValue = mode === 'campaign' ? String(levelData.id) : '';
+  const modeLabel = mode === 'daily' ? 'DAILY' : mode === 'infinite' ? 'INFINITE' : 'LVL';
+  const modeValue = mode === 'campaign'
+    ? String(levelData.id).padStart(3, '0')
+    : '';
 
   return (
     <div className="app" style={{ position: 'relative' }}>
-      <AuroraBackground variant="default" />
+      <DeepSpaceBg />
       <div className="game-hud" style={{ position: 'relative', zIndex: 10 }}>
         <HeartBar hearts={hearts} />
         <div className="hud-center">
@@ -84,16 +86,16 @@ export function GameBoard() {
 
       <div className="game-bottom-bar" style={{ position: 'relative', zIndex: 10 }}>
         <button className="bottom-bar-btn" onClick={() => navigate('/')}>
-          <IconHome size={20} />
-          <span className="lbl">Home</span>
+          <IconHome size={18} />
+          <span className="lbl">HOME</span>
         </button>
         <button className="bottom-bar-btn" onClick={undoMove}>
-          <IconUndo size={20} />
-          <span className="lbl">Undo</span>
+          <IconUndo size={18} />
+          <span className="lbl">UNDO</span>
         </button>
         <button className="bottom-bar-btn" onClick={restartLevel}>
-          <IconRestart size={20} />
-          <span className="lbl">Restart</span>
+          <IconRestart size={18} />
+          <span className="lbl">RESTART</span>
         </button>
       </div>
     </div>

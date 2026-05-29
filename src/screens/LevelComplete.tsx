@@ -50,6 +50,9 @@ export function LevelComplete() {
   return (
     <div className="app">
       <div className="complete-screen screen">
+        {/* Slowly rotating conic gradient background */}
+        <div className="conic-bg" aria-hidden />
+
         {/* Pure-CSS confetti burst — 12 dots that explode on mount */}
         <div className="confetti-burst" aria-hidden>
           {Array.from({ length: 12 }).map((_, i) => (
@@ -57,7 +60,7 @@ export function LevelComplete() {
           ))}
         </div>
 
-        {/* LEVEL CLEARED banner slides in from top */}
+        {/* LEVEL CLEARED banner slides in from top with golden shimmer */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -122,7 +125,7 @@ export function LevelComplete() {
           transition={{ delay: 0.75 }}
           className="complete-actions"
         >
-          <button className="btn btn-primary btn-full btn-lg" onClick={handleNext}>
+          <button className="btn btn-primary btn-full btn-lg next-level-btn" onClick={handleNext}>
             {mode === 'infinite' ? '▶ Next Puzzle' : nextLevel ? '▶ Next Level' : '▶ All Levels'}
           </button>
           {!removeAds && !rewardClaimed && (

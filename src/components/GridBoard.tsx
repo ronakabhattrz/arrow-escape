@@ -47,40 +47,46 @@ export function GridBoard({ grid, hintArrowId, onTapArrow }: Props) {
 
   return (
     <div ref={containerRef} style={{ flex: 1, alignSelf: 'stretch', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+      {/* Gradient border outer wrapper */}
       <div
-        className="grid-board"
-        style={{
-          gridTemplateColumns: `repeat(${size}, ${cellSize}px)`,
-          width: boardWidth,
-          boxShadow: flashError
-            ? '0 0 0 3px var(--danger), 0 0 40px var(--danger-glow)'
-            : undefined,
-          transition: 'box-shadow 0.1s ease',
-        }}
+        className="grid-gradient-border grid-outer-glow"
+        style={{ width: boardWidth + 3 }}
       >
-        {grid.map((row, r) =>
-          row.map((cell, c) => (
-            <div key={`${r}-${c}`} className="grid-cell" style={{ width: cellSize, height: cellSize }}>
-              <AnimatePresence>
-                {cell ? (
-                  <ShakeWrapper trigger={shaking[cell.id] ?? 0}>
-                    <ArrowCell
-                      key={cell.id}
-                      arrow={cell}
-                      cellSize={cellSize}
-                      isHint={cell.id === hintArrowId}
-                      onTap={handleTap}
-                      gridSize={size}
-                    />
-                  </ShakeWrapper>
-                ) : (
-                  /* Subtle dot-grid pattern visible only on empty cells */
-                  <div className="grid-bg" aria-hidden />
-                )}
-              </AnimatePresence>
-            </div>
-          ))
-        )}
+        <div
+          className="grid-board"
+          style={{
+            gridTemplateColumns: `repeat(${size}, ${cellSize}px)`,
+            width: '100%',
+            boxShadow: flashError
+              ? '0 0 0 3px var(--danger), 0 0 40px var(--danger-glow)'
+              : undefined,
+            transition: 'box-shadow 0.1s ease',
+          }}
+        >
+          {grid.map((row, r) =>
+            row.map((cell, c) => (
+              <div key={`${r}-${c}`} className="grid-cell" style={{ width: cellSize, height: cellSize }}>
+                <AnimatePresence>
+                  {cell ? (
+                    <ShakeWrapper trigger={shaking[cell.id] ?? 0}>
+                      <ArrowCell
+                        key={cell.id}
+                        arrow={cell}
+                        cellSize={cellSize}
+                        isHint={cell.id === hintArrowId}
+                        onTap={handleTap}
+                        gridSize={size}
+                      />
+                    </ShakeWrapper>
+                  ) : (
+                    /* Dot-grid pattern visible only on empty cells */
+                    <div className="grid-bg" aria-hidden />
+                  )}
+                </AnimatePresence>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );

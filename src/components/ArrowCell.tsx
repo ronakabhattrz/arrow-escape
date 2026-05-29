@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import type { Arrow } from '../types';
 import { directionOffset } from '../game/gameEngine';
@@ -39,18 +39,32 @@ export const ArrowCell = React.memo(function ArrowCell({ arrow, cellSize, isHint
   const steps = dr !== 0 && dc !== 0 ? Math.min(maxStepsR, maxStepsC) : dr !== 0 ? maxStepsR : maxStepsC;
   const exitX = dc * (steps + 2) * cellSize;
   const exitY = dr * (steps + 2) * cellSize;
+  const [flashing, setFlashing] = useState(false);
+  const [tapPulse, setTapPulse] = useState(false);
+
+  const handleTap = () => {
+    // Brightness flash + ripple scale pulse on tap
+    setFlashing(true);
+    setTapPulse(true);
+    setTimeout(() => setFlashing(false), 200);
+    setTimeout(() => setTapPulse(false), 300);
+    onTap(arrow.id);
+  };
 
   return (
     <motion.div
-      className={`arrow-cell${isHint ? ' hint' : ''}`}
-      onClick={() => onTap(arrow.id)}
-      whileTap={{ scale: 0.88 }}
+      className={`arrow-cell cell-glass${isHint ? ' hint' : ''}${flashing ? ' arrow-cell-flash' : ''}`}
+      onClick={handleTap}
+      whileTap={{ scale: [0.88, 0.95, 0.88] }}
+      animate={tapPulse ? { scale: [1, 0.9, 1.04, 1] } : { scale: 1 }}
+      transition={tapPulse ? { duration: 0.28, ease: [0.16, 1, 0.3, 1] } : undefined}
       style={{ color: 'var(--arrow-color)' }}
       exit={{
         x: exitX,
         y: exitY,
         opacity: 0,
         scale: 0.8,
+        filter: 'brightness(2)',
         transition: { duration: 0.22, ease: [0.4, 0, 1, 1] },
       }}
     >

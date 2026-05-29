@@ -64,8 +64,10 @@ export function GameBoard() {
       <div className="game-hud">
         <HeartBar hearts={hearts} />
         <div className="hud-center">
-          <div className="hud-level-tag">{modeLabel}</div>
-          {modeValue && <div className="hud-level-num">{modeValue}</div>}
+          <div className={modeValue ? 'hud-level-pill' : undefined}>
+            <div className="hud-level-tag">{modeLabel}</div>
+            {modeValue && <div className="hud-level-num">{modeValue}</div>}
+          </div>
         </div>
         <HintButton
           count={hintsOwned}

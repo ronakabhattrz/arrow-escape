@@ -1,4 +1,5 @@
 import { Purchases } from '@revenuecat/purchases-capacitor';
+import { Capacitor } from '@capacitor/core';
 
 const REVENUECAT_IOS_KEY = 'app4f8593bb6d';
 
@@ -15,6 +16,7 @@ let configured = false;
 
 async function ensureConfigured(): Promise<boolean> {
   if (configured) return true;
+  if (Capacitor.getPlatform() !== 'ios') return false;
   try {
     await Purchases.configure({ apiKey: REVENUECAT_IOS_KEY });
     configured = true;

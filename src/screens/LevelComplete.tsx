@@ -6,6 +6,7 @@ import { useProgressStore } from '../store/progressStore';
 import { showInterstitial, showRewarded } from '../services/admob';
 import levelsData from '../data/levels.json';
 import type { LevelData } from '../types';
+import { AuroraBackground } from '../components/AuroraBackground';
 
 const LEVELS = levelsData as LevelData[];
 
@@ -50,6 +51,9 @@ export function LevelComplete() {
   return (
     <div className="app">
       <div className="complete-screen screen">
+        {/* Aurora background with gold/amber tint */}
+        <AuroraBackground variant="gold" />
+
         {/* Slowly rotating conic gradient background */}
         <div className="conic-bg" aria-hidden />
 
@@ -66,7 +70,7 @@ export function LevelComplete() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.05, duration: 0.01 }}
           className="level-cleared-banner"
-          style={{ position: 'relative', zIndex: 2 }}
+          style={{ position: 'relative', zIndex: 2, fontSize: 18, letterSpacing: '4px', padding: '12px 36px' }}
         >
           LEVEL CLEARED
         </motion.div>
@@ -104,6 +108,9 @@ export function LevelComplete() {
                 delay: 0.38 + s * 0.18,
                 ease: [0.16, 1, 0.3, 1],
               }}
+              style={s <= starsEarned ? {
+                filter: 'drop-shadow(0 0 10px rgba(245,158,11,0.9)) drop-shadow(0 0 24px rgba(245,158,11,0.5))',
+              } : undefined}
             >
               ⭐
             </motion.span>

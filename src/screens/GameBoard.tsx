@@ -9,6 +9,7 @@ import { HintButton } from '../components/HintButton';
 import { SoundService } from '../services/sound';
 import { HapticsService } from '../services/haptics';
 import { IconHome, IconUndo, IconRestart } from '../components/Icons';
+import { AuroraBackground } from '../components/AuroraBackground';
 
 export function GameBoard() {
   const navigate = useNavigate();
@@ -60,8 +61,9 @@ export function GameBoard() {
   const modeValue = mode === 'campaign' ? String(levelData.id) : '';
 
   return (
-    <div className="app">
-      <div className="game-hud">
+    <div className="app" style={{ position: 'relative' }}>
+      <AuroraBackground variant="default" />
+      <div className="game-hud" style={{ position: 'relative', zIndex: 10 }}>
         <HeartBar hearts={hearts} />
         <div className="hud-center">
           <div className={modeValue ? 'hud-level-pill' : undefined}>
@@ -76,11 +78,11 @@ export function GameBoard() {
         />
       </div>
 
-      <div className="game-board-container">
+      <div className="game-board-container" style={{ position: 'relative', zIndex: 1 }}>
         <GridBoard grid={grid} hintArrowId={hintArrowId} onTapArrow={handleTap} />
       </div>
 
-      <div className="game-bottom-bar">
+      <div className="game-bottom-bar" style={{ position: 'relative', zIndex: 10 }}>
         <button className="bottom-bar-btn" onClick={() => navigate('/')}>
           <IconHome size={20} />
           <span className="lbl">Home</span>

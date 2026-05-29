@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useGameStore } from '../store/gameStore';
 import { useProgressStore } from '../store/progressStore';
 import { showRewarded } from '../services/admob';
+import { AuroraBackground } from '../components/AuroraBackground';
 
 export function LevelFailed() {
   const navigate = useNavigate();
@@ -39,6 +40,9 @@ export function LevelFailed() {
     <div className="app">
       {/* Outer wrapper gets the CSS screen-shake animation on mount */}
       <div className="failed-screen screen failed-screen-shake">
+        {/* Red aurora tint */}
+        <AuroraBackground variant="danger" />
+
         {/* One-time dark red flash on mount */}
         <div className="failed-bg-flash" aria-hidden />
 
@@ -46,16 +50,16 @@ export function LevelFailed() {
           initial={{ scale: 0.4, rotate: -20 }}
           animate={{ scale: 1, rotate: 0 }}
           transition={{ type: 'spring', stiffness: 260, damping: 14 }}
-          style={{ fontSize: 72, lineHeight: 1, position: 'relative', zIndex: 1 }}
+          style={{ fontSize: 88, lineHeight: 1, position: 'relative', zIndex: 1 }}
         >
-          <span className="failed-heart-throb">💔</span>
+          <span className="failed-heart-throb" style={{ filter: 'drop-shadow(0 0 20px rgba(244,63,94,0.8))' }}>💔</span>
         </motion.div>
 
         <motion.h2
           initial={{ y: 16, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="title-lg glitch-text"
+          className="title-lg glitch-text failed-title-gradient"
           style={{ position: 'relative', zIndex: 1 }}
         >
           Out of Hearts!

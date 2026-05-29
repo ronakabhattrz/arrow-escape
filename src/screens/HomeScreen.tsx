@@ -5,6 +5,7 @@ import { useProgressStore } from '../store/progressStore';
 import { showBanner, hideBanner } from '../services/admob';
 import { isDailyCompleted } from '../game/dailyPuzzle';
 import { IconPlay, IconStats, IconSettings, IconCalendar, IconInfinity, IconBook } from '../components/Icons';
+import { AuroraBackground } from '../components/AuroraBackground';
 
 const LogoSVG = () => (
   <svg viewBox="0 0 52 52" fill="none">
@@ -22,14 +23,14 @@ const BgArrowSVG = ({ size }: { size: number }) => (
   </svg>
 );
 
-// Varied sizes for 12 kinetic arrows — mix of small to large
-const KB_SIZES = [28, 36, 22, 42, 26, 48, 32, 20, 38, 24, 44, 30];
+// Varied sizes for 8 subtle kinetic arrows
+const KB_SIZES = [28, 36, 22, 42, 26, 32, 20, 38];
 
 function KineticBackground() {
   return (
     <div className="home-kinetic-bg" aria-hidden>
-      {Array.from({ length: 12 }).map((_, i) => (
-        <span key={i} className="kb-arrow" style={{ color: 'var(--accent)' }}>
+      {Array.from({ length: 8 }).map((_, i) => (
+        <span key={i} className="kb-arrow" style={{ color: 'rgba(255,255,255,0.08)' }}>
           <BgArrowSVG size={KB_SIZES[i]} />
         </span>
       ))}
@@ -64,6 +65,9 @@ export function HomeScreen() {
   return (
     <div className="app">
       <div className="home-screen screen">
+        {/* Aurora mesh gradient background */}
+        <AuroraBackground variant="default" />
+
         {/* Kinetic drifting arrow background */}
         <KineticBackground />
 

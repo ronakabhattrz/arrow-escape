@@ -50,10 +50,28 @@ export function LevelComplete() {
   return (
     <div className="app">
       <div className="complete-screen screen">
+        {/* Pure-CSS confetti burst — 12 dots that explode on mount */}
+        <div className="confetti-burst" aria-hidden>
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div key={i} className="confetti-dot" />
+          ))}
+        </div>
+
+        {/* LEVEL CLEARED banner slides in from top */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.05, duration: 0.01 }}
+          className="level-cleared-banner"
+          style={{ position: 'relative', zIndex: 2 }}
+        >
+          LEVEL CLEARED
+        </motion.div>
+
         <motion.div
           initial={{ scale: 0, rotate: -15 }}
           animate={{ scale: 1, rotate: 0 }}
-          transition={{ type: 'spring', stiffness: 280, damping: 16, delay: 0.05 }}
+          transition={{ type: 'spring', stiffness: 280, damping: 16, delay: 0.18 }}
           className="complete-emoji"
         >
           {emoji}
@@ -62,7 +80,7 @@ export function LevelComplete() {
         <motion.h2
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.28, duration: 0.35 }}
           className="complete-title"
         >
           {title}
@@ -73,9 +91,16 @@ export function LevelComplete() {
             <motion.span
               key={s}
               className={`star-item${s > starsEarned ? ' empty' : ''}`}
-              initial={{ scale: 0, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 14, delay: 0.25 + s * 0.15 }}
+              initial={{ scale: 0, y: 30, rotate: -25 }}
+              animate={s <= starsEarned
+                ? { scale: [0, 1.35, 0.88, 1.12, 1], y: 0, rotate: ['-25deg', '10deg', '-6deg', '3deg', '0deg'] }
+                : { scale: 1, y: 0, rotate: 0 }
+              }
+              transition={{
+                duration: 0.55,
+                delay: 0.38 + s * 0.18,
+                ease: [0.16, 1, 0.3, 1],
+              }}
             >
               ⭐
             </motion.span>
@@ -85,7 +110,7 @@ export function LevelComplete() {
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.7 }}
+          transition={{ delay: 0.9 }}
           className="complete-subtitle"
         >
           {subtitle}

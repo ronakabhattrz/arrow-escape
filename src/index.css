@@ -1500,3 +1500,334 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; }
   -webkit-backdrop-filter: blur(12px);
   box-shadow: var(--shadow-md);
 }
+
+/* ═══════════════════════════════════════════
+   PREMIUM KEYFRAMES
+═══════════════════════════════════════════ */
+
+/* Drifting background arrows on home screen */
+@keyframes float-arrow {
+  0%   { transform: translateY(0px)   translateX(0px)   rotate(var(--fa-rot, 0deg)) scale(1);    opacity: var(--fa-op, 0.07); }
+  33%  { transform: translateY(-18px) translateX(6px)   rotate(var(--fa-rot, 0deg)) scale(1.04); opacity: calc(var(--fa-op, 0.07) * 1.3); }
+  66%  { transform: translateY(-8px)  translateX(-5px)  rotate(var(--fa-rot, 0deg)) scale(0.97); opacity: calc(var(--fa-op, 0.07) * 0.8); }
+  100% { transform: translateY(0px)   translateX(0px)   rotate(var(--fa-rot, 0deg)) scale(1);    opacity: var(--fa-op, 0.07); }
+}
+
+/* Neon glow pulse on the logo */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow:
+      0 8px 0 rgba(20,50,180,0.6),
+      0 14px 40px rgba(77,159,255,0.5),
+      0 0 0   rgba(77,159,255,0),
+      inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+  50% {
+    box-shadow:
+      0 8px 0 rgba(20,50,180,0.6),
+      0 20px 60px rgba(77,159,255,0.75),
+      0 0 80px rgba(155,109,255,0.35),
+      inset 0 1px 0 rgba(255,255,255,0.35);
+  }
+}
+
+/* Play button ambient glow */
+@keyframes play-btn-glow {
+  0%, 100% { box-shadow: 0 8px 0 rgba(20,50,180,0.55), 0 14px 40px rgba(77,159,255,0.4), inset 0 1px 0 rgba(255,255,255,0.3), inset 0 -1px 0 rgba(0,0,0,0.15); }
+  50%       { box-shadow: 0 8px 0 rgba(20,50,180,0.55), 0 22px 55px rgba(77,159,255,0.65), 0 0 60px rgba(155,109,255,0.2), inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -1px 0 rgba(0,0,0,0.15); }
+}
+
+/* Score pop — number bounces up */
+@keyframes score-pop {
+  0%   { transform: translateY(0) scale(1);    opacity: 1; }
+  40%  { transform: translateY(-28px) scale(1.3); opacity: 1; }
+  100% { transform: translateY(-52px) scale(0.9); opacity: 0; }
+}
+
+/* Confetti dot explosion — 12 variants via CSS custom props */
+@keyframes confetti-fall {
+  0%   { transform: translate(0, 0) rotate(0deg)   scale(1);   opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translate(var(--cx, 0px), var(--cy, 80px)) rotate(var(--cr, 360deg)) scale(0.6); opacity: 0; }
+}
+
+/* Screen shake for level failed */
+@keyframes screen-shake {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  10%  { transform: translate(-8px, -3px) rotate(-1.5deg); }
+  20%  { transform: translate(8px, 3px)  rotate(1.5deg); }
+  30%  { transform: translate(-6px, -2px) rotate(-1deg); }
+  40%  { transform: translate(6px, 2px)  rotate(1deg); }
+  50%  { transform: translate(-4px, -1px) rotate(-0.5deg); }
+  60%  { transform: translate(4px, 1px)  rotate(0.5deg); }
+  70%  { transform: translate(-2px, 0);  }
+  80%  { transform: translate(2px, 0);   }
+  90%  { transform: translate(-1px, 0);  }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+/* Heart pulse / throb on failed screen */
+@keyframes heart-throb {
+  0%, 100% { transform: scale(1); }
+  15%       { transform: scale(1.22); }
+  30%       { transform: scale(1); }
+  45%       { transform: scale(1.12); }
+  60%       { transform: scale(1); }
+}
+
+/* LEVEL CLEARED banner slides in from top */
+@keyframes banner-drop {
+  0%   { transform: translateY(-120%) scaleX(0.85); opacity: 0; }
+  60%  { transform: translateY(6%) scaleX(1.02);    opacity: 1; }
+  80%  { transform: translateY(-3%) scaleX(0.99);   opacity: 1; }
+  100% { transform: translateY(0%) scaleX(1);        opacity: 1; }
+}
+
+/* Star bounce on complete */
+@keyframes star-bounce {
+  0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
+  55%  { transform: scale(1.25) rotate(8deg);  opacity: 1; }
+  75%  { transform: scale(0.9) rotate(-4deg);  opacity: 1; }
+  90%  { transform: scale(1.08) rotate(2deg);  opacity: 1; }
+  100% { transform: scale(1) rotate(0deg);     opacity: 1; }
+}
+
+/* Try Again text fade + rise */
+@keyframes try-again-in {
+  0%   { transform: translateY(10px); opacity: 0; }
+  100% { transform: translateY(0);    opacity: 1; }
+}
+
+/* Arrow exit motion trail — a pseudo-element streak left behind */
+@keyframes trail-fade {
+  0%   { opacity: 0.5; transform: scaleX(1); }
+  100% { opacity: 0;   transform: scaleX(0.1); }
+}
+
+/* ═══════════════════════════════════════════
+   GRID BACKGROUND PATTERN (empty cells)
+═══════════════════════════════════════════ */
+
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: 12px;
+  background-image:
+    radial-gradient(circle, rgba(77,159,255,0.18) 1px, transparent 1px);
+  background-size: 8px 8px;
+  opacity: 0.6;
+}
+
+/* ── Enhanced empty grid cells with dot pattern ── */
+.grid-cell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background-image:
+    radial-gradient(circle, rgba(79,143,255,0.12) 1px, transparent 1px);
+  background-size: 7px 7px;
+  background-position: 3px 3px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Show dot pattern only on empty cells (no child arrow-cell) */
+.grid-cell:not(:has(.arrow-cell))::after {
+  opacity: 1;
+}
+
+[data-theme="light"] .grid-cell::after {
+  background-image: radial-gradient(circle, rgba(37,99,235,0.1) 1px, transparent 1px);
+}
+
+/* ═══════════════════════════════════════════
+   ARROW CELL — ENHANCED INNER GLOW + SVG
+═══════════════════════════════════════════ */
+
+/* Inner glow on all arrow cells */
+.arrow-cell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 11px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(170,215,255,0.18) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Arrow SVG — bolder, more striking */
+.arrow-cell svg {
+  width: 66%;
+  height: 66%;
+  filter: drop-shadow(0 0 8px var(--arrow-glow)) drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  transition: filter 0.15s;
+}
+
+.arrow-cell:active svg {
+  filter: drop-shadow(0 0 14px var(--arrow-glow)) drop-shadow(0 1px 2px rgba(0,0,0,0.6));
+}
+
+/* Motion trail — a horizontal streak pseudo-element that plays on exit */
+.arrow-trail {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(77,159,255,0.35), transparent);
+  animation: trail-fade 0.22s ease-out forwards;
+  will-change: opacity, transform;
+  transform-origin: center;
+}
+
+/* ═══════════════════════════════════════════
+   HOME SCREEN — KINETIC BACKGROUND ARROWS
+═══════════════════════════════════════════ */
+
+.home-kinetic-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+/* Each drifting arrow is an SVG positioned absolutely */
+.home-kinetic-bg .kb-arrow {
+  position: absolute;
+  will-change: transform, opacity;
+  animation: float-arrow var(--fa-dur, 7s) var(--fa-delay, 0s) ease-in-out infinite;
+}
+
+/* Position + style each of the 9 background arrows */
+.kb-arrow:nth-child(1)  { top: 8%;  left: 6%;  --fa-rot: 0deg;    --fa-op: 0.06; --fa-dur: 9s;  --fa-delay: 0s; }
+.kb-arrow:nth-child(2)  { top: 14%; right: 8%; --fa-rot: -45deg;  --fa-op: 0.05; --fa-dur: 11s; --fa-delay: 1.5s; }
+.kb-arrow:nth-child(3)  { top: 30%; left: 3%;  --fa-rot: -90deg;  --fa-op: 0.07; --fa-dur: 8s;  --fa-delay: 0.8s; }
+.kb-arrow:nth-child(4)  { top: 45%; right: 5%; --fa-rot: 45deg;   --fa-op: 0.05; --fa-dur: 13s; --fa-delay: 2s; }
+.kb-arrow:nth-child(5)  { top: 58%; left: 10%; --fa-rot: 180deg;  --fa-op: 0.06; --fa-dur: 10s; --fa-delay: 0.4s; }
+.kb-arrow:nth-child(6)  { top: 70%; right: 3%; --fa-rot: 135deg;  --fa-op: 0.05; --fa-dur: 12s; --fa-delay: 3s; }
+.kb-arrow:nth-child(7)  { top: 80%; left: 20%; --fa-rot: 90deg;   --fa-op: 0.07; --fa-dur: 8.5s; --fa-delay: 1.2s; }
+.kb-arrow:nth-child(8)  { top: 22%; left: 42%; --fa-rot: -135deg; --fa-op: 0.04; --fa-dur: 14s; --fa-delay: 0.6s; }
+.kb-arrow:nth-child(9)  { top: 62%; right: 20%;--fa-rot: 0deg;    --fa-op: 0.05; --fa-dur: 10s; --fa-delay: 2.5s; }
+
+/* ═══════════════════════════════════════════
+   HOME LOGO — NEON GLOW PULSE
+═══════════════════════════════════════════ */
+
+.home-logo {
+  animation: glow-pulse 3.5s ease-in-out infinite;
+}
+
+/* Larger logo */
+.home-logo {
+  width: 108px;
+  height: 108px;
+  border-radius: 30px;
+}
+
+.home-logo svg {
+  width: 58px;
+  height: 58px;
+}
+
+/* ═══════════════════════════════════════════
+   HOME PLAY BUTTON — AMBIENT GLOW ANIMATION
+═══════════════════════════════════════════ */
+
+.home-play-btn {
+  animation: play-btn-glow 2.8s ease-in-out infinite;
+}
+
+.home-play-btn:active {
+  animation: none;
+}
+
+/* ═══════════════════════════════════════════
+   LEVEL COMPLETE — CONFETTI + BANNER
+═══════════════════════════════════════════ */
+
+/* Confetti container */
+.confetti-burst {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Each confetti dot */
+.confetti-dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  will-change: transform, opacity;
+  animation: confetti-fall 0.9s ease-out forwards;
+}
+
+/* 12 dots — different colors, angles, distances */
+.confetti-dot:nth-child(1)  { background: #FFB830; --cx: -70px;  --cy: -90px;  --cr: 300deg; animation-delay: 0s; }
+.confetti-dot:nth-child(2)  { background: #4D9FFF; --cx: 70px;   --cy: -90px;  --cr: 260deg; animation-delay: 0.04s; }
+.confetti-dot:nth-child(3)  { background: #00E676; --cx: -110px; --cy: -30px;  --cr: 340deg; animation-delay: 0.06s; }
+.confetti-dot:nth-child(4)  { background: #FF4D6A; --cx: 110px;  --cy: -30px;  --cr: 200deg; animation-delay: 0.02s; }
+.confetti-dot:nth-child(5)  { background: #9B6DFF; --cx: -50px;  --cy: 100px;  --cr: 280deg; animation-delay: 0.08s; }
+.confetti-dot:nth-child(6)  { background: #FFB830; --cx: 50px;   --cy: 100px;  --cr: 320deg; animation-delay: 0.03s; }
+.confetti-dot:nth-child(7)  { background: #00E676; --cx: -90px;  --cy: 60px;   --cr: 160deg; animation-delay: 0.07s; width: 8px; height: 8px; border-radius: 2px; }
+.confetti-dot:nth-child(8)  { background: #4D9FFF; --cx: 90px;   --cy: 60px;   --cr: 240deg; animation-delay: 0.05s; width: 8px; height: 8px; border-radius: 2px; }
+.confetti-dot:nth-child(9)  { background: #FF4D6A; --cx: 0px;    --cy: -115px; --cr: 180deg; animation-delay: 0.01s; width: 7px; height: 14px; border-radius: 3px; }
+.confetti-dot:nth-child(10) { background: #9B6DFF; --cx: -130px; --cy: 10px;   --cr: 400deg; animation-delay: 0.09s; width: 12px; height: 6px; }
+.confetti-dot:nth-child(11) { background: #FFB830; --cx: 130px;  --cy: 10px;   --cr: -300deg;animation-delay: 0.03s; width: 12px; height: 6px; }
+.confetti-dot:nth-child(12) { background: #00E676; --cx: -30px;  --cy: 120px;  --cr: 450deg; animation-delay: 0.06s; width: 9px; height: 9px; border-radius: 2px; }
+
+/* LEVEL CLEARED banner */
+.level-cleared-banner {
+  background: linear-gradient(135deg, #FFB830 0%, #FF8C00 100%);
+  border-radius: 14px;
+  padding: 10px 28px;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: rgba(0,0,0,0.85);
+  text-transform: uppercase;
+  box-shadow: 0 4px 0 rgba(180,80,0,0.4), 0 8px 24px rgba(255,184,48,0.35);
+  animation: banner-drop 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+  position: relative;
+}
+
+/* Stars — use CSS animation class for enhanced bounce */
+.star-item-animated {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* ═══════════════════════════════════════════
+   LEVEL FAILED — SHAKE + THROB
+═══════════════════════════════════════════ */
+
+.failed-screen-shake {
+  animation: screen-shake 0.55s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+  will-change: transform;
+}
+
+.failed-heart-throb {
+  display: inline-block;
+  animation: heart-throb 1.2s ease-in-out 0.1s infinite;
+  will-change: transform;
+  filter: drop-shadow(0 0 16px rgba(255,77,106,0.75));
+}
+
+.failed-try-again {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--danger);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: try-again-in 0.5s ease-out 1.2s forwards;
+  will-change: transform, opacity;
+}

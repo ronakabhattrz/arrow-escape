@@ -12,9 +12,14 @@ function ArrowSVG({ dir }: { dir: Arrow['dir'] }) {
   return (
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
       style={{ transform: `rotate(${ANGLE[dir]}deg)`, width: '65%', height: '65%' }}>
-      <line x1="4" y1="12" x2="17" y2="12"
-        stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-      <polygon points="15,7 22,12 15,17" fill="currentColor" />
+      {/* Shaft with rounded ends for premium feel */}
+      <line x1="3" y1="12" x2="16.5" y2="12"
+        stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+      {/* Bold filled arrowhead — larger triangle */}
+      <polygon points="14.5,6.5 22.5,12 14.5,17.5" fill="currentColor" />
+      {/* Subtle inner highlight line on shaft */}
+      <line x1="3.5" y1="11.2" x2="14" y2="11.2"
+        stroke="rgba(255,255,255,0.3)" strokeWidth="1" strokeLinecap="round" />
     </svg>
   );
 }

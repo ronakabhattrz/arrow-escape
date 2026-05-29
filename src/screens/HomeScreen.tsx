@@ -13,6 +13,27 @@ const LogoSVG = () => (
   </svg>
 );
 
+// Single arrow SVG used in the kinetic background
+const BgArrowSVG = () => (
+  <svg viewBox="0 0 24 24" width="36" height="36" fill="none">
+    <line x1="4" y1="12" x2="17" y2="12"
+      stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    <polygon points="15,7.5 21,12 15,16.5" fill="currentColor" />
+  </svg>
+);
+
+function KineticBackground() {
+  return (
+    <div className="home-kinetic-bg" aria-hidden>
+      {Array.from({ length: 9 }).map((_, i) => (
+        <span key={i} className="kb-arrow" style={{ color: 'var(--accent)' }}>
+          <BgArrowSVG />
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export function HomeScreen() {
   const navigate = useNavigate();
   const { totalCompleted, dailyStreak, lastDailyDate, removeAds, hasSeenTutorial } = useProgressStore();
@@ -38,11 +59,15 @@ export function HomeScreen() {
   return (
     <div className="app">
       <div className="home-screen screen">
+        {/* Kinetic drifting arrow background */}
+        <KineticBackground />
+
         <motion.div
           initial={{ scale: 0.6, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 240, damping: 18, delay: 0.05 }}
           className="home-logo"
+          style={{ position: 'relative', zIndex: 1 }}
         >
           <LogoSVG />
         </motion.div>
@@ -52,6 +77,7 @@ export function HomeScreen() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.15, duration: 0.4 }}
           className="home-title-wrap"
+          style={{ position: 'relative', zIndex: 1 }}
         >
           <h1 className="title-xl">ARROW<br />ESCAPE</h1>
         </motion.div>
@@ -61,6 +87,7 @@ export function HomeScreen() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.22, duration: 0.4 }}
           className="home-tagline"
+          style={{ position: 'relative', zIndex: 1 }}
         >
           Clear every arrow from the grid.{'\n'}No timer. No chaos. Pure logic.
         </motion.p>
@@ -70,6 +97,7 @@ export function HomeScreen() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.28, duration: 0.4 }}
           className="home-buttons"
+          style={{ position: 'relative', zIndex: 1 }}
         >
           <button className="home-play-btn" onClick={() => navigate('/levels')}>
             <IconPlay size={22} />
@@ -112,7 +140,7 @@ export function HomeScreen() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.45 }}
           className="home-util-row"
-          style={{ maxWidth: 340, marginTop: 10 }}
+          style={{ maxWidth: 340, marginTop: 10, position: 'relative', zIndex: 1 }}
         >
           <button className="home-util-btn" onClick={() => navigate('/stats')}>
             <IconStats size={16} />

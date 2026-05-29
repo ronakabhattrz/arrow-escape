@@ -37,14 +37,15 @@ export function LevelFailed() {
 
   return (
     <div className="app">
-      <div className="failed-screen screen">
+      {/* Outer wrapper gets the CSS screen-shake animation on mount */}
+      <div className="failed-screen screen failed-screen-shake">
         <motion.div
           initial={{ scale: 0.4, rotate: -20 }}
           animate={{ scale: 1, rotate: 0 }}
           transition={{ type: 'spring', stiffness: 260, damping: 14 }}
           style={{ fontSize: 72, lineHeight: 1 }}
         >
-          💔
+          <span className="failed-heart-throb">💔</span>
         </motion.div>
 
         <motion.h2
@@ -56,10 +57,13 @@ export function LevelFailed() {
           Out of Hearts!
         </motion.h2>
 
+        {/* "TRY AGAIN?" fades in with delay via CSS */}
+        <p className="failed-try-again">TRY AGAIN?</p>
+
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.35 }}
           style={{ color: 'var(--text2)', textAlign: 'center', maxWidth: 280, lineHeight: 1.5 }}
         >
           Think about the order — some arrows need to exit before others can move.

@@ -62,7 +62,7 @@ export function GridBoard({ grid, hintArrowId, onTapArrow }: Props) {
           row.map((cell, c) => (
             <div key={`${r}-${c}`} className="grid-cell" style={{ width: cellSize, height: cellSize }}>
               <AnimatePresence>
-                {cell && (
+                {cell ? (
                   <ShakeWrapper trigger={shaking[cell.id] ?? 0}>
                     <ArrowCell
                       key={cell.id}
@@ -73,6 +73,9 @@ export function GridBoard({ grid, hintArrowId, onTapArrow }: Props) {
                       gridSize={size}
                     />
                   </ShakeWrapper>
+                ) : (
+                  /* Subtle dot-grid pattern visible only on empty cells */
+                  <div className="grid-bg" aria-hidden />
                 )}
               </AnimatePresence>
             </div>

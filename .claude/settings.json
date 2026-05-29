@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s https://www.elevenclicks.com/app-ads.txt)",
+      "Bash(git commit -m ' *)"
+    ]
+  }
+}

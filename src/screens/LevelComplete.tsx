@@ -33,7 +33,7 @@ export function LevelComplete() {
   };
 
   useEffect(() => {
-    if (!removeAds && totalCompleted % 3 === 0) showInterstitial();
+    if (!removeAds && totalCompleted > 0 && totalCompleted % 3 === 0) showInterstitial();
   }, [totalCompleted, removeAds]);
 
   if (!levelData) { navigate('/'); return null; }

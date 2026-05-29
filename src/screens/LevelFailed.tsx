@@ -1,4 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useGameStore } from '../store/gameStore';
 import { useProgressStore } from '../store/progressStore';
@@ -8,14 +9,30 @@ export function LevelFailed() {
   const navigate = useNavigate();
   const location = useLocation();
   const mode = (location.state as { mode?: string })?.mode ?? 'campaign';
-  const { restartLevel, addHeart } = useGameStore();
-  const { removeAds } = useProgressStore();
+  const { restartLevel, addHeart, levelData } = useGameStore();
+  const { removeAds, setLevelStars, incrementCompleted, unlockLevel, unlockedLevels } = useProgressStore();
+  const [loading, setLoading] = useState(false);
 
   const handleRestart = () => { restartLevel(); navigate('/game', { state: { mode } }); };
 
   const handleWatchAd = async () => {
+    setLoading(true);
     const rewarded = await showRewarded();
+    setLoading(false);
     if (rewarded) { addHeart(); navigate('/game', { state: { mode } }); }
+  };
+
+  const handleSkip = async () => {
+    setLoading(true);
+    const rewarded = await showRewarded();
+    setLoading(false);
+    if (rewarded && levelData) {
+      const id = String(levelData.id);
+      setLevelStars(id, Math.max(1, useProgressStore.getState().levelStars[id] ?? 0));
+      incrementCompleted();
+      if (unlockedLevels <= levelData.id) unlockLevel(levelData.id + 1);
+      navigate('/');
+    }
   };
 
   return (
@@ -58,8 +75,13 @@ export function LevelFailed() {
             🔄 Try Again
           </button>
           {!removeAds && (
-            <button className="btn btn-secondary btn-full" onClick={handleWatchAd}>
+            <button className="btn btn-secondary btn-full" onClick={handleWatchAd} disabled={loading}>
               📺 Watch Ad for +1 Heart
+            </button>
+          )}
+          {!removeAds && mode === 'campaign' && (
+            <button className="btn btn-ghost btn-full" onClick={handleSkip} disabled={loading}>
+              ⏭ Skip Level (watch ad)
             </button>
           )}
           <button className="btn btn-ghost btn-full" onClick={() => navigate('/')}>

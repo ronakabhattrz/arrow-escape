@@ -12,8 +12,9 @@ function ArrowSVG({ dir }: { dir: Arrow['dir'] }) {
   return (
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
       style={{ transform: `rotate(${ANGLE[dir]}deg)`, width: '65%', height: '65%' }}>
-      <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2.8"
-        strokeLinecap="round" strokeLinejoin="round" fill="none" />
+      <line x1="4" y1="12" x2="17" y2="12"
+        stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <polygon points="15,7 22,12 15,17" fill="currentColor" />
     </svg>
   );
 }

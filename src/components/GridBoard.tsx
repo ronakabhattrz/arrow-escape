@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import type { GridState } from '../types';
 import { ArrowCell, ShakeWrapper } from './ArrowCell';
@@ -13,6 +13,7 @@ export function GridBoard({ grid, hintArrowId, onTapArrow }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [cellSize, setCellSize] = useState(60);
   const [shaking, setShaking] = useState<Record<string, number>>({});
+  const [flashError, setFlashError] = useState(false);
   const size = grid.length;
 
   useEffect(() => {
@@ -31,12 +32,14 @@ export function GridBoard({ grid, hintArrowId, onTapArrow }: Props) {
     return () => ro.disconnect();
   }, [size]);
 
-  const handleTap = (id: string) => {
+  const handleTap = useCallback((id: string) => {
     const result = onTapArrow(id);
     if (result === 'invalid') {
       setShaking(prev => ({ ...prev, [id]: (prev[id] ?? 0) + 1 }));
+      setFlashError(true);
+      setTimeout(() => setFlashError(false), 350);
     }
-  };
+  }, [onTapArrow]);
 
   const CELL_GAP = 6;
   const BOARD_PAD = 28;
@@ -49,6 +52,10 @@ export function GridBoard({ grid, hintArrowId, onTapArrow }: Props) {
         style={{
           gridTemplateColumns: `repeat(${size}, ${cellSize}px)`,
           width: boardWidth,
+          boxShadow: flashError
+            ? '0 0 0 3px var(--danger), 0 0 40px var(--danger-glow)'
+            : undefined,
+          transition: 'box-shadow 0.1s ease',
         }}
       >
         {grid.map((row, r) =>

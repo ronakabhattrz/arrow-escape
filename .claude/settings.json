@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(curl -s https://www.elevenclicks.com/app-ads.txt)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(curl -sI https://elevenclicks.com/app-ads.txt)",
+      "Bash(curl -s https://elevenclicks.com/app-ads.txt)",
+      "Bash(node -e ' *)"
+    ],
+    "additionalDirectories": [
+      "/Volumes/Ronak Data/projects/personal/it-company "
     ]
   }
 }

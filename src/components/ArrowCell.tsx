@@ -1,3 +1,4 @@
+import React from 'react';
 import { motion } from 'framer-motion';
 import type { Arrow } from '../types';
 import { directionOffset } from '../game/gameEngine';
@@ -25,7 +26,7 @@ interface Props {
   gridSize: number;
 }
 
-export function ArrowCell({ arrow, cellSize, isHint, onTap, gridSize }: Props) {
+export const ArrowCell = React.memo(function ArrowCell({ arrow, cellSize, isHint, onTap, gridSize }: Props) {
   const [dr, dc] = directionOffset(arrow.dir);
   const maxStepsR = dr > 0 ? gridSize - 1 - arrow.row : dr < 0 ? arrow.row : 0;
   const maxStepsC = dc > 0 ? gridSize - 1 - arrow.col : dc < 0 ? arrow.col : 0;
@@ -39,7 +40,6 @@ export function ArrowCell({ arrow, cellSize, isHint, onTap, gridSize }: Props) {
       onClick={() => onTap(arrow.id)}
       whileTap={{ scale: 0.88 }}
       style={{ color: 'var(--arrow-color)' }}
-      layout
       exit={{
         x: exitX,
         y: exitY,
@@ -51,7 +51,12 @@ export function ArrowCell({ arrow, cellSize, isHint, onTap, gridSize }: Props) {
       <ArrowSVG dir={arrow.dir} />
     </motion.div>
   );
-}
+}, (prev, next) =>
+  prev.arrow.id === next.arrow.id &&
+  prev.arrow.dir === next.arrow.dir &&
+  prev.isHint === next.isHint &&
+  prev.cellSize === next.cellSize
+);
 
 export function ShakeWrapper({ trigger, children }: { trigger: number; children: React.ReactNode }) {
   return (

@@ -71,11 +71,13 @@ export async function showInterstitial(): Promise<void> {
   if (!ADS_ENABLED) return;
   try {
     await AdMob.prepareInterstitial({ adId: getAdUnit('interstitial'), isTesting: false });
+    let loadedHandle: { remove: () => void } | null = null;
     await new Promise<void>((resolve) => {
       AdMob.addListener(InterstitialAdPluginEvents.Loaded, async () => {
         await AdMob.showInterstitial();
+        loadedHandle?.remove();
         resolve();
-      });
+      }).then(h => { loadedHandle = h; });
     });
   } catch {
     // Ad not ready or web
@@ -88,10 +90,14 @@ export async function showRewarded(): Promise<boolean> {
     try {
       let rewarded = false;
       await AdMob.prepareRewardVideoAd({ adId: getAdUnit('rewarded'), isTesting: false });
-      AdMob.addListener(RewardAdPluginEvents.Rewarded, (_reward: AdMobRewardItem) => {
+      const rewardHandle = await AdMob.addListener(RewardAdPluginEvents.Rewarded, (_reward: AdMobRewardItem) => {
         rewarded = true;
       });
-      AdMob.addListener(RewardAdPluginEvents.Dismissed, () => resolve(rewarded));
+      const dismissHandle = await AdMob.addListener(RewardAdPluginEvents.Dismissed, () => {
+        rewardHandle.remove();
+        dismissHandle.remove();
+        resolve(rewarded);
+      });
       await AdMob.showRewardVideoAd();
     } catch {
       resolve(false);

@@ -42,6 +42,11 @@ function findSolution(initialGrid: GridState): string[] | null {
   return null;
 }
 
+function countInitiallyBlocked(grid: GridState): number {
+  const arrows = getAllArrows(grid);
+  return arrows.filter(a => !isValidMove(grid, a)).length;
+}
+
 function scoreDifficulty(arrowCount: number, size: number, solutionLength: number): number {
   const base = arrowCount + size - 4;
   const complexity = solutionLength > arrowCount ? 1 : 0;
@@ -81,6 +86,10 @@ export function generateLevel(
     const grid = buildGrid(size, arrows);
     const solution = findSolution(grid);
     if (solution && solution.length === arrowCount) {
+      const blocked = countInitiallyBlocked(buildGrid(size, arrows));
+      // Require at least 35% of arrows to be initially blocked — forces strategic play
+      const minBlocked = Math.ceil(arrowCount * 0.35);
+      if (blocked < minBlocked) continue;
       return {
         id: seed ?? attempt,
         size,
@@ -93,11 +102,12 @@ export function generateLevel(
   return null;
 }
 
-export function generateLevelForDifficulty(difficulty: 1 | 2 | 3, seed?: number): LevelData | null {
+export function generateLevelForDifficulty(difficulty: 1 | 2 | 3 | 4, seed?: number): LevelData | null {
   const configs: Record<number, { size: number; arrows: number }> = {
-    1: { size: 4, arrows: 4 },
-    2: { size: 5, arrows: 6 },
-    3: { size: 6, arrows: 9 },
+    1: { size: 4, arrows: 5 },   // was 4 — more crowded
+    2: { size: 5, arrows: 8 },   // was 6 — much more crowded
+    3: { size: 6, arrows: 12 },  // was 9 — very crowded
+    4: { size: 7, arrows: 16 },  // was 12 — expert density
   };
   const { size, arrows } = configs[difficulty];
   return generateLevel(size, arrows, seed);

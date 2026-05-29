@@ -1,4 +1,4 @@
-// Generates 400 valid Arrow Escape levels with BFS-verified solutions
+// Generates 400 harder Arrow Escape levels with BFS-verified solutions
 // Run: node scripts/generateLevels.mjs
 
 const DIRS = {
@@ -22,21 +22,15 @@ function buildGrid(size, arrows) {
   return g;
 }
 
-function getCells(grid, row, col, dir) {
-  const [dr, dc] = DIRS[dir];
+function isValid(grid, arrow) {
+  const [dr, dc] = DIRS[arrow.dir];
   const size = grid.length;
-  const cells = [];
-  let r = row + dr, c = col + dc;
+  let r = arrow.row + dr, c = arrow.col + dc;
   while (r >= 0 && r < size && c >= 0 && c < size) {
-    cells.push([r, c]);
+    if (grid[r][c]) return false;
     r += dr; c += dc;
   }
-  return cells;
-}
-
-function isValid(grid, arrow) {
-  return getCells(grid, arrow.row, arrow.col, arrow.dir)
-    .every(([r, c]) => grid[r][c] === null);
+  return true;
 }
 
 function applyMove(grid, id) {
@@ -61,8 +55,7 @@ function findSolution(initialGrid) {
     const { grid, order } = queue.shift();
     const arrows = getAll(grid);
     if (arrows.length === 0) return order;
-    // State key = positions of remaining arrows
-    const key = arrows.map(a => `${a.id}:${a.row},${a.col}`).sort().join('|');
+    const key = arrows.map(a => `${a.id}`).sort().join('|');
     if (seen.has(key)) continue;
     seen.add(key);
     for (const arrow of arrows) {
@@ -75,12 +68,15 @@ function findSolution(initialGrid) {
   return null;
 }
 
+function countBlocked(grid) {
+  return getAll(grid).filter(a => !isValid(grid, a)).length;
+}
+
 function placeRandom(size, count, rand) {
   const positions = [];
   for (let r = 0; r < size; r++)
     for (let c = 0; c < size; c++)
       positions.push([r, c]);
-  // Fisher-Yates
   for (let i = positions.length - 1; i > 0; i--) {
     const j = Math.floor(rand() * (i + 1));
     [positions[i], positions[j]] = [positions[j], positions[i]];
@@ -94,16 +90,21 @@ function placeRandom(size, count, rand) {
   }));
 }
 
-function generateLevel(id, size, arrowCount, seed) {
+function generateLevel(id, size, arrowCount, minBlockedRatio, seed) {
   const rand = seededRandom(seed);
-  for (let attempt = 0; attempt < 2000; attempt++) {
-    // Shuffle seed per attempt
+  const minBlocked = Math.ceil(arrowCount * minBlockedRatio);
+
+  for (let attempt = 0; attempt < 3000; attempt++) {
     for (let i = 0; i < attempt % 7; i++) rand();
     const arrows = placeRandom(size, arrowCount, rand);
-    // Ensure no duplicate positions
     const positions = new Set(arrows.map(a => `${a.row},${a.col}`));
     if (positions.size !== arrows.length) continue;
     const grid = buildGrid(size, arrows);
+
+    // Require minimum blockedness — forces strategic ordering
+    const blocked = countBlocked(grid);
+    if (blocked < minBlocked) continue;
+
     const solution = findSolution(grid);
     if (solution && solution.length === arrowCount) {
       const diff = size <= 4 ? 1 : size === 5 ? 2 : size === 6 ? 3 : 4;
@@ -113,30 +114,31 @@ function generateLevel(id, size, arrowCount, seed) {
   return null;
 }
 
+// Harder configs: more arrows, higher blocked ratio requirement
+// [count, size, arrowCount, minBlockedRatio]
 const BATCHES = [
-  // [count, size, arrowCount]
-  [80,  4, 4],  // Easy:   4×4 with 4 arrows   (levels 1-80)
-  [20,  4, 5],  // Easy+:  4×4 with 5 arrows   (levels 81-100)
-  [60,  5, 5],  // Medium: 5×5 with 5 arrows   (levels 101-160)
-  [60,  5, 6],  // Medium: 5×5 with 6 arrows   (levels 161-220)
-  [30,  5, 7],  // Medium+:5×5 with 7 arrows   (levels 221-250)
-  [50,  6, 7],  // Hard:   6×6 with 7 arrows   (levels 251-300)
-  [50,  6, 9],  // Hard:   6×6 with 9 arrows   (levels 301-350)
-  [30,  7, 10], // Expert: 7×7 with 10 arrows  (levels 351-380)
-  [20,  7, 12], // Expert: 7×7 with 12 arrows  (levels 381-400)
+  [60,  4, 5,  0.3],   // Easy:    4×4 / 5 arrows  — 35% must be blocked
+  [40,  4, 6,  0.35],  // Easy+:   4×4 / 6 arrows
+  [50,  5, 7,  0.35],  // Medium:  5×5 / 7 arrows
+  [60,  5, 8,  0.4],   // Medium:  5×5 / 8 arrows
+  [40,  5, 9,  0.4],   // Medium+: 5×5 / 9 arrows
+  [50,  6, 11, 0.4],   // Hard:    6×6 / 11 arrows
+  [50,  6, 13, 0.45],  // Hard+:   6×6 / 13 arrows
+  [30,  7, 14, 0.45],  // Expert:  7×7 / 14 arrows
+  [20,  7, 16, 0.5],   // Expert+: 7×7 / 16 arrows
 ];
 
 const levels = [];
 let id = 1;
-let seed = 0x1337BEEF;
+let seed = 0xDEADBEEF;
 
-for (const [count, size, arrows] of BATCHES) {
+for (const [count, size, arrows, ratio] of BATCHES) {
   let generated = 0;
   let attempts = 0;
-  process.stdout.write(`Generating ${count} levels (${size}×${size}, ${arrows} arrows)...`);
-  while (generated < count && attempts < count * 20) {
+  process.stdout.write(`Generating ${count} levels (${size}×${size}, ${arrows} arrows, ${Math.round(ratio*100)}% blocked)...`);
+  while (generated < count && attempts < count * 30) {
     seed = (seed * 1664525 + 1013904223) >>> 0;
-    const level = generateLevel(id, size, arrows, seed);
+    const level = generateLevel(id, size, arrows, ratio, seed);
     if (level) {
       levels.push(level);
       id++;
@@ -153,3 +155,6 @@ writeFileSync(
   JSON.stringify(levels)
 );
 console.log(`\n✅ Generated ${levels.length} levels → src/data/levels.json`);
+const diffs = {};
+levels.forEach(l => diffs[l.difficulty] = (diffs[l.difficulty] ?? 0) + 1);
+console.log('Difficulty distribution:', diffs);

@@ -5,7 +5,8 @@
       "Bash(git commit -m ' *)",
       "Bash(curl -sI https://elevenclicks.com/app-ads.txt)",
       "Bash(curl -s https://elevenclicks.com/app-ads.txt)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(f'Total levels: {len\\(d\\)}'\\); diffs = {}; [diffs.update\\({l[\\\\\"difficulty\\\\\"]: diffs.get\\(l[\\\\\"difficulty\\\\\"],0\\)+1}\\) for l in d]; print\\('By difficulty:', diffs\\)\")"
     ],
     "additionalDirectories": [
       "/Volumes/Ronak Data/projects/personal/it-company "
